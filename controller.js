@@ -37,7 +37,23 @@ module.exports = {
 	},
 
 	destroy: function(req, res){
-		client.remove(req.params.member, function (err, client) {
+		client.remove(req.params.member, function (err) {
+			res.send(err ? 500 : 200);
+		});
+	},
+
+	action: function(req, res){
+		if (['promote', 'demote'].indexOf(req.params.action) === -1) {
+			res.send(404);
+		} else {
+			client[req.params.action](req.params.member, function (err) {
+				res.send(err ? 500 : 200);
+			});
+		}
+	},
+
+	reset: function(req, res){
+		client.reset(function (err) {
 			res.send(err ? 500 : 200);
 		});
 	}

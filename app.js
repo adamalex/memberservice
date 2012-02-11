@@ -22,8 +22,10 @@ app.configure('production', function(){
 });
 
 // Routes
-
-app.resource('members', require('./controller'));
+var controller = require('./controller');
+app.resource('members', controller);
+app.post('/members/:member/:action', controller.action);
+app.post('/members/reset', controller.reset);
 
 // Start
 
