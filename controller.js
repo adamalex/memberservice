@@ -3,7 +3,7 @@ var _ = require('underscore');
 
 var MemberStore = require('../memberstore/gen-nodejs/MemberStore');
 var conn = thrift.createConnection('localhost', 9701);
-var	client = thrift.createClient(MemberStore, conn);
+var client = thrift.createClient(MemberStore, conn);
 
 conn.on('error', function(err) {
 	console.error("error:", err);
