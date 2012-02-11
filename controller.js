@@ -70,9 +70,8 @@ function createCollectionResponse(collection) {
 }
 
 function createModelResponse(model) {
-	model.actions = [
-		{ rel: 'promote', method: 'post', href: '/members/' + model.id + '/promote' },
-		{ rel: 'demote', method: 'post', href: '/members/' + model.id + '/demote' }
-	];
+	model.actions = [];
+	if (model.rank > 1) model.actions.push({ rel: 'promote', method: 'post', href: '/members/' + model.id + '/promote' });
+	model.actions.push({ rel: 'demote', method: 'post', href: '/members/' + model.id + '/demote' });
 	return model;
 }
