@@ -60,6 +60,20 @@ require(Fuel.requireConfig.withAppPaths({ 'fuel-components': 'js/empty' }, ['fue
 		return false;
 	});
 
+	$('#resetBtn').on('click', function () {
+		$.ajax({
+			cache: false,
+			url: '/members/reset',
+			type: 'post',
+			success: function (data, status, xhr) {
+				onNeedGridData();
+			},
+			error: function (xhr, status, error) {
+				console.log("error");
+			}
+		});
+	});
+
 	function onNeedGridData(evt, data) {
 		$.ajax({
 			cache: false,
