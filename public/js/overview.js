@@ -44,6 +44,22 @@ require(Fuel.requireConfig.withAppPaths({ 'fuel-components': 'js/empty' }, ['fue
 		$('#grid').fuelGridView('resize');
 	});
 
+	$(document).on('click', '[data-method]', function () {
+		$.ajax({
+			cache: false,
+			url: this.href,
+			type: $(this).data().method,
+			success: function (data, status, xhr) {
+				onNeedGridData();
+			},
+			error: function (xhr, status, error) {
+				console.log("error");
+			}
+		});
+
+		return false;
+	});
+
 	function onNeedGridData(evt, data) {
 		$.ajax({
 			cache: false,
