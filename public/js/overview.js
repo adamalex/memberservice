@@ -1,5 +1,7 @@
 require(Fuel.requireConfig.withAppPaths({ 'fuel-components': 'js/empty' }, ['fuel-core', 'fuel-controls']), ['jquery', 'underscore', 'gridView'], function ($, _) {
-
+	//
+	// Standard use of FuelUX GridView
+	//
 	$('#grid').fuelGridView({
 		title: 'Members',
 		width: 'auto',
@@ -44,6 +46,36 @@ require(Fuel.requireConfig.withAppPaths({ 'fuel-components': 'js/empty' }, ['fue
 		$('#grid').fuelGridView('resize');
 	});
 
+	function onNeedGridData(evt, data) {
+		$.ajax({
+			cache: false,
+			url: '/members',
+			success: function (data, status, xhr) {
+				$('#grid').fuelGridView('loadData', data);
+			},
+			error: function (xhr, status, error) {
+				console.log("error");
+			}
+		});
+	}
+
+
+	//
+	// Renderer for Actions column
+	// Actions are dynamic as specified in response
+	//
+	function renderActions(member) {
+		var actionLinks = [];
+		_(member.actions).each(function (action) {
+			actionLinks.push('<a data-method="' + action.method + '" href="' + action.href + '">' + action.rel + '</a>');
+		});
+		return actionLinks.join(' ');
+	}
+
+
+	//
+	// Generic handler for member action link clicks
+	//
 	$(document).on('click', '[data-method]', function () {
 		$.ajax({
 			cache: false,
@@ -60,6 +92,10 @@ require(Fuel.requireConfig.withAppPaths({ 'fuel-components': 'js/empty' }, ['fue
 		return false;
 	});
 
+
+	//
+	// Handler for Reset Data button
+	//
 	$('#resetBtn').on('click', function () {
 		$.ajax({
 			cache: false,
@@ -73,25 +109,4 @@ require(Fuel.requireConfig.withAppPaths({ 'fuel-components': 'js/empty' }, ['fue
 			}
 		});
 	});
-
-	function onNeedGridData(evt, data) {
-		$.ajax({
-			cache: false,
-			url: '/members',
-			success: function (data, status, xhr) {
-				$('#grid').fuelGridView('loadData', data);
-			},
-			error: function (xhr, status, error) {
-				console.log("error");
-			}
-		});
-	}
-
-	function renderActions(member) {
-		var actionLinks = [];
-		_(member.actions).each(function (action) {
-			actionLinks.push('<a data-method="' + action.method + '" href="' + action.href + '">' + action.rel + '</a>');
-		});
-		return actionLinks.join(' ');
-	}
 });
